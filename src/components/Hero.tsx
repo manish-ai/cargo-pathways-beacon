@@ -8,7 +8,7 @@ const Hero = () => {
             <div className="animate-fade-in" style={{
             animationDelay: "0.1s"
           }}>
-              <span className="inline-block bg-orange-light/10 rounded-full text-sm mb-6 mx-[20px] my-[30px] py-[16px] px-[26px] font-bold text-green-950">#1 Logistics Providers</span>
+              <span className="inline-block bg-orange-light/10 rounded-full mb-6 my-[30px] px-[26px] text-slate-950 mx-[29px] py-[21px] font-extrabold text-lg text-right">#1 Logistics Providerzzzzzzzz</span>
             </div>
             
             <h1 style={{
