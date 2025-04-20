@@ -101,6 +101,19 @@
           console.error("Element with data-lov-id not found");
         }
       }
+      if (event.data.type === "SET_TEXT_CONTENT") {
+        console.log("Attributes:", event.data);
+        // FIND ELEment by data-lov-id attribute
+        const lovId = event.data.lovId;
+        const element = document.querySelector(`[data-lov-id="${lovId}"]`);
+        if (element) {
+          // Set the innerHTML of the element to the code received
+          element.innerText = event.data.value;
+          console.log("Element found and code set:", element);
+        } else {
+          console.error("Element with data-lov-id not found");
+        }
+      }
     });
   </script>
 </html>
