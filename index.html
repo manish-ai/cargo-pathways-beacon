@@ -10,17 +10,97 @@
     <meta property="og:title" content="cargo-pathways-beacon" />
     <meta property="og:description" content="Lovable Generated Project" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta
+      property="og:image"
+      content="https://lovable.dev/opengraph-image-p98pqg.png"
+    />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta
+      name="twitter:image"
+      content="https://lovable.dev/opengraph-image-p98pqg.png"
+    />
   </head>
 
   <body>
     <div id="root"></div>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <!-- <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script> -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
+  <script>
+    //onload of document do something
+    window.onload = () => {
+      let lastHoveredElement = null;
+
+      document.addEventListener("mouseover", (e) => {
+        // Only act if it's a new element
+        if (lastHoveredElement && lastHoveredElement !== e.target) {
+          lastHoveredElement.style.outline = ""; // remove border
+        }
+
+        e.target.style.outline = "2px solid rgba(4, 137, 253, 0.55)";
+        e.target.style.cursor = "crosshair";
+
+        lastHoveredElement = e.target;
+      });
+
+      document.addEventListener("mouseout", (e) => {
+        if (e.target === lastHoveredElement) {
+          e.target.style.outline = "";
+          lastHoveredElement = null;
+        }
+      });
+    };
+
+    document.addEventListener("click", (event) => {
+      const el = event.target;
+      console.log("parent window", window.parent);
+      console.log("🔍 Element Clicked:", el.style);
+      const style = el.style;
+      obj = JSON.parse(JSON.stringify(el.style));
+
+      let attributes = {};
+      Array.from(el.attributes).forEach((attr) => {
+        if (
+          attr.name.startsWith("data-lov") ||
+          attr.name.startsWith("data-component")
+        ) {
+          attributes[attr.name] = attr.value;
+        }
+      });
+      window.parent.postMessage(
+        {
+          type: "HIGHLIGHT",
+          message: "clicked",
+          style: obj,
+          text: el.innerText,
+          className: el.className,
+          tagName: el.tagName,
+          id: JSON.parse(JSON.stringify(el.id)),
+          attributes: JSON.parse(JSON.stringify(attributes)),
+        },
+        "*"
+      );
+    });
+
+    // Listen for messages from the parent window
+    window.addEventListener("message", (event) => {
+      if (event.data.type === "SET_CODE") {
+        console.log("Attributes:", event.data);
+        // FIND ELEment by data-lov-id attribute
+        const lovId = event.data.lovId;
+        const styleType = event.data.styleType;
+        const element = document.querySelector(`[data-lov-id="${lovId}"]`);
+        if (element) {
+          // Set the innerHTML of the element to the code received
+          element.style[styleType] = event.data.value;
+          console.log("Element found and code set:", element);
+        } else {
+          console.error("Element with data-lov-id not found");
+        }
+      }
+    });
+  </script>
 </html>
